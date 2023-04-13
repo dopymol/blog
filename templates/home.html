@@ -1,0 +1,56 @@
+{% load static %}
+<html>
+    <head>
+        <title>
+            post_online app
+        </title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <link rel="stylesheet" href=" {% static '/css/main.css' %} ">
+    </head>
+    <body>
+        {% block content %}
+        <!-- Image and text -->
+        <div>
+<nav class="navbar navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">
+    <button type="button" class="btn btn-light">My Blog</button>
+  </a>
+    <li class="nav-item">
+        <a class="nav-link" href="logout">Logout</a>
+      </li>
+</nav>
+            </div>
+        <div class="container">
+            <a href="{% url 'addblog' %}" class='btn btn-primary'>Add Blog</a>
+            <br>
+
+                   <div class="col-4">
+        {% for b in blogs %}
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src={{b.Image.url}} class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{ b.title }}</h5>
+        <p class="card-text">{{ b.description }}</p>
+          <form action='{%  url 'like' b.id %}' method=POST>
+           {% csrf_token %}
+
+          <a href="{% url 'update' b.id %}" class="btn btn-warning">update</a>
+          <a href="{% url 'delete' b.id %}" class="btn btn-danger">Delete</a>
+          <br><br>
+          <button type='submit' class='btn btn-success'>{{b.likes}} Like</button>
+            </form>
+        <p class="card-text"><small class="text-muted">Last updated {{b.date}}</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+        {% endfor %}
+        </div>
+        </div>
+    </body>
+     {% endblock %}
